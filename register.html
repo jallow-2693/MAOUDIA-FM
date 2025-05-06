@@ -44,7 +44,6 @@
   <div class="form-container text-white">
     <h2 class="mb-4 text-center">Créer ton compte & ton club</h2>
     <form id="registerForm">
-      <!-- Partie Joueur -->
       <div class="mb-2">
         <label>Pseudo</label>
         <input type="text" class="form-control" name="pseudo" required />
@@ -70,14 +69,13 @@
         <input type="password" class="form-control" name="confirm_password" required />
       </div>
 
-      <!-- Partie Club -->
       <div class="mb-2">
         <label>Nom du club</label>
         <input type="text" class="form-control" name="nom_club" required />
       </div>
       <div class="mb-2">
         <label>Pays</label>
-        <input type="text" class="form-control" name="pays" placeholder="Ex : Guinée, Sénégal..." required />
+        <input type="text" class="form-control" name="pays" required />
       </div>
       <div class="mb-4">
         <label>Couleur principale</label>
@@ -100,6 +98,62 @@
   </div>
   <footer>
     &copy; 2025 Maoudia Football Manager. Tous droits réservés.
-  </footer
+  </footer>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const pseudo = form.pseudo.value.trim();
+      const nom = form.nom.value.trim();
+      const prenom = form.prenom.value.trim();
+      const email = form.email.value.trim().toLowerCase();
+      const password = form.password.value;
+      const confirmPassword = form.confirm_password.value;
+      const nom_club = form.nom_club.value.trim();
+      const pays = form.pays.value.trim();
+      const couleur = form.couleur.value;
+
+      if (password !== confirmPassword) {
+        alert("Les mots de passe ne correspondent pas.");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      const pseudoExiste = users.some(u => u.pseudo === pseudo);
+      const emailExiste = users.some(u => u.email === email);
+
+      if (pseudoExiste) {
+        alert("Ce pseudo est déjà utilisé.");
+        return;
+      }
+
+      if (emailExiste) {
+        alert("Cet email est déjà utilisé.");
+        return;
+      }
+
+      const newUser = {
+        pseudo,
+        nom,
+        prenom,
+        email,
+        password,
+        club: {
+          nom: nom_club,
+          pays,
+          couleur
+        }
+      };
+
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Compte créé avec succès !");
+      window.location.href = "login.html";
+    });
+  </script>
 </body>
 </html>
