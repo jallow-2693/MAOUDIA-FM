@@ -47,41 +47,41 @@
       <!-- Partie Joueur -->
       <div class="mb-2">
         <label>Pseudo</label>
-        <input type="text" class="form-control" required />
+        <input type="text" class="form-control" name="pseudo" required />
       </div>
       <div class="mb-2">
         <label>Nom</label>
-        <input type="text" class="form-control" required />
+        <input type="text" class="form-control" name="nom" required />
       </div>
       <div class="mb-2">
         <label>Prénom</label>
-        <input type="text" class="form-control" required />
+        <input type="text" class="form-control" name="prenom" required />
       </div>
       <div class="mb-2">
         <label>Email</label>
-        <input type="email" class="form-control" required />
+        <input type="email" class="form-control" name="email" required />
       </div>
       <div class="mb-2">
         <label>Mot de passe</label>
-        <input type="password" class="form-control" required />
+        <input type="password" class="form-control" name="password" required />
       </div>
       <div class="mb-3">
         <label>Confirmation du mot de passe</label>
-        <input type="password" class="form-control" required />
+        <input type="password" class="form-control" name="confirm_password" required />
       </div>
 
       <!-- Partie Club -->
       <div class="mb-2">
         <label>Nom du club</label>
-        <input type="text" class="form-control" required />
+        <input type="text" class="form-control" name="nom_club" required />
       </div>
       <div class="mb-2">
         <label>Pays</label>
-        <input type="text" class="form-control" placeholder="Ex : Guinée, Sénégal..." required />
+        <input type="text" class="form-control" name="pays" placeholder="Ex : Guinée, Sénégal..." required />
       </div>
       <div class="mb-4">
         <label>Couleur principale</label>
-        <select class="form-select" required>
+        <select class="form-select" name="couleur" required>
           <option value="">-- Choisis une couleur --</option>
           <option>Rouge</option><option>Bleu</option><option>Vert</option>
           <option>Jaune</option><option>Noir</option><option>Blanc</option>
@@ -102,11 +102,56 @@
     &copy; 2025 Maoudia Football Manager. Tous droits réservés.
   </footer>
 
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
+
   <script>
+    // Configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBdhhB4MfhmhcaNGoNt_P0BbA0HHCqpfNM",
+      authDomain: "maoudia-football-manager.firebaseapp.com",
+      projectId: "maoudia-football-manager",
+      databaseURL: "https://maoudia-football-manager-default-rtdb.firebaseio.com",
+      storageBucket: "maoudia-football-manager.appspot.com",
+      messagingSenderId: "156024101120",
+      appId: "1:156024101120:web:a829def58512218d3f3be5",
+      measurementId: "G-7YQK5R59E6"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     document.getElementById('registerForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert("Compte et club créés !");
-      window.location.href = 'dashboard.html'; // ou une autre page de ton choix
+
+      const form = e.target;
+      const data = {
+        pseudo: form.pseudo.value,
+        nom: form.nom.value,
+        prenom: form.prenom.value,
+        email: form.email.value,
+        password: form.password.value,
+        confirm_password: form.confirm_password.value,
+        nom_club: form.nom_club.value,
+        pays: form.pays.value,
+        couleur: form.couleur.value,
+        date_inscription: new Date().toISOString()
+      };
+
+      if (data.password !== data.confirm_password) {
+        alert("Les mots de passe ne correspondent pas !");
+        return;
+      }
+
+      db.ref("users").push(data)
+        .then(() => {
+          alert("Compte et club créés !");
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          alert("Erreur lors de l'inscription : " + error.message);
+        });
     });
   </script>
 </body>
