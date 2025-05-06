@@ -133,3 +133,11 @@ function afficherJoueurs(joueurs = JSON.parse(localStorage.getItem("monEquipe") 
 
 // Charger à l’ouverture si déjà généré
 window.onload = () => afficherJoueurs();
+window.onload = () => {
+  const equipe = JSON.parse(localStorage.getItem("monEquipe"));
+  if (!equipe || equipe.length === 0) {
+    genererEquipe(); // génère automatiquement l’équipe si non encore présente
+  } else {
+    afficherJoueurs(equipe); // sinon on l'affiche
+  }
+};
