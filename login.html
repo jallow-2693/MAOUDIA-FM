@@ -63,40 +63,5 @@
   <footer>
     &copy; 2025 Maoudia Football Manager. Tous droits réservés.
   </footer>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBdhhB4MfhmhcaNGoNt_P0BbA0HHCqpfNM",
-      authDomain: "maoudia-football-manager.firebaseapp.com",
-      projectId: "maoudia-football-manager",
-      storageBucket: "maoudia-football-manager.appspot.com",
-      messagingSenderId: "156024101120",
-      appId: "1:156024101120:web:a829def58512218d3f3be5",
-      measurementId: "G-7YQK5R59E6"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const email = e.target.email.value;
-      const password = e.target.password.value;
-
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          alert("Connexion réussie !");
-          window.location.href = "dashboard.html"; // Redirection après connexion
-        })
-        .catch((error) => {
-          alert("Erreur : " + error.message);
-        });
-    });
-  </script>
 </body>
 </html>
