@@ -45,8 +45,8 @@
     <h2 class="mb-4 text-center">Connexion à Maoudia FM</h2>
     <form id="loginForm">
       <div class="mb-3">
-        <label>Email</label>
-        <input type="email" class="form-control" name="email" required />
+        <label>Pseudo</label>
+        <input type="text" class="form-control" name="pseudo" required />
       </div>
       <div class="mb-3">
         <label>Mot de passe</label>
@@ -63,5 +63,23 @@
   <footer>
     &copy; 2025 Maoudia Football Manager. Tous droits réservés.
   </footer>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const pseudo = e.target.pseudo.value.trim();
+      const password = e.target.password.value;
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.pseudo === pseudo && u.password === password);
+
+      if (user) {
+        localStorage.setItem('loggedUser', JSON.stringify(user));
+        window.location.href = 'dashboard.html';
+      } else {
+        alert("Pseudo ou mot de passe incorrect.");
+      }
+    });
+  </script>
 </body>
 </html>
